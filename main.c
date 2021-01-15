@@ -15,7 +15,7 @@ int main(void) {
 	FILE* fichier = fopen("temp2","r");
 	fscanf(fichier,"%d",&total);
 	fclose(fichier);
-  printf("[%d]\n",total);
+  printf("[%d] : ",total);
 	char c;
 	c = getchar();
 	if(c!='\n'){
