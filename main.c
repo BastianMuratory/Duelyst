@@ -10,13 +10,17 @@ int main(void) {
 	system("wc -l temp > temp2");
 	system("clear");
 	
-	int total = 0; // nombre total d'image
+	int total = 0; 
 	
-
 	FILE* fichier = fopen("temp2","r");
 	fscanf(fichier,"%d",&total);
 	fclose(fichier);
-	//printf("Il y a %d images\n",total);
+  printf("[%d]\n",total);
+	char c;
+	c = getchar();
+	if(c!='\n'){
+		return EXIT_SUCCESS;
+	}
 
 	char** liste = (char**)malloc(total*sizeof(char*));
 	char** liste2 = (char**)malloc(total*sizeof(char*));
@@ -36,7 +40,6 @@ int main(void) {
 			differentes++;
 			strcpy(current,liste2[i]);
 		}
-		printf("[%d] %s\n",i,liste2[i]);
 	}
 	
 
@@ -57,60 +60,60 @@ int main(void) {
 		occurence[indice-1] ++;
 	}
 
-	for(int i=0;i<differentes;i++){
-		printf("[%d] %s = %d\n",i,nom[i],occurence[i]);
-	}
 
-	char name_of_unit[50];
-	printf("Nom de l'unitée :");
-	scanf("%s",name_of_unit);
+	char name_of_unit[50] = "";
+
+	/////////////// Recup nom 
+
+	strncat(name_of_unit,nom[0],strlen(nom[0])-7);
+
+	//////////////////
+
 	char chemin[100] = "result/";
 	strcat(chemin,name_of_unit);
+
+
+
 
 	// creation du dossier teminal
 	char commande1[100] = "mkdir ";
 	strcat(commande1,chemin);
 	system(commande1);
-	strcat(commande1,"/sprites");
-	system(commande1);
+	//mkdir result/name
 
-	// creation du fichier sprite
+	// creation du fichier data
 	char commande2[100] = "touch ";
 	strcat(commande2,chemin);
-	strcat(commande2,"/sprite.txt");
+	strcat(commande2,"/data.txt");
 	system(commande2);
+	//touch result/name/data.txt
 
-	// ouverture du fichier sprite
+	// ouverture du fichier data
 	char file[100] = "";
 	strcat(file,chemin);
-	strcat(file,"/sprite.txt");
+	strcat(file,"/data.txt");
 	fichier = fopen(file,"w");
-	fprintf(fichier,"%d,%d\n",total,differentes);
 	for(int i=0;i<differentes;i++){
-		fprintf(fichier,"%d,%s\n",occurence[i],nom[i]);
+		fprintf(fichier,"%d\n",occurence[i]);
+	}
+	// affichage des degats
+	for(int i =0;i<5;i++){
+		fprintf(fichier,"0\n");
 	}
 	fclose(fichier);
 	
-	char deplacement2[10] = "mv unit/";
-	for(int i = 0;i<total;i++){
-		char com[100] = "";
-		strcat(com,deplacement2);
-		strcat(com,liste[i]);
-		strcat(com," result/");
-		strcat(com,name_of_unit);
-		strcat(com,"/sprites");
-		system(com);
-	}
-
-
-
-
 
 	
+	// copie des sprites pour vider unit
+	char cp[50] = "cp -r unit ";
+	strcat(cp,chemin);
+	strcat(cp,"/sprite");
+	system(cp);
 
-
-
-
-
+	// vidage de unit
+	system("rm -rf unit");
+	system("rm temp*");
+	system("mkdir unit");
+	
   return 0;
 }
