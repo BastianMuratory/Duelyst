@@ -5,7 +5,6 @@
 #define MAX 100
 
 int main(void) {
-
 	system("ls ./unit > temp");
 	system("wc -l temp > temp2");
 	system("clear");
